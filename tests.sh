@@ -113,3 +113,10 @@ echo ""
 echo "apple" | ./your_grep.sh -E "(cat|dog)"
 echo "> last test should fail ('apple' | '(cat|dog)'"
 echo ""
+
+echo "a cow" | ./your_grep.sh -E "a (cat|dog)"
+echo "> last test should fail ('a cow' | 'a (cat|dog)'"
+echo ""
+
+echo "a cow" | ./your_grep.sh -E "(cat|dog) a"
+echo "> last test should fail ('a cow' | '(cat|dog) a')"

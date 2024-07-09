@@ -17,8 +17,9 @@ export class Alternation extends Pattern {
         resolve: {
             if (!pattern.includes(this.pattern)) break resolve;
 
-            let rightPattern = pattern.split(this.pattern)[1];
             let leftPattern = pattern.split(this.pattern)[0];
+            let rightPattern = pattern.split(this.pattern)[1];
+            // console.log("no parens", {leftPattern, rightPattern});
 
             const openParen = leftPattern.indexOf("(");
             const closeParen = rightPattern.indexOf(")");
@@ -27,9 +28,10 @@ export class Alternation extends Pattern {
             if (openParen === -1 && closeParen !== -1) break resolve;
 
             if (openParen !== -1 && closeParen !== -1) {
-                leftPattern = leftPattern.slice(0, openParen) + leftPattern.slice(openParen + 1, closeParen);
-                rightPattern = rightPattern.slice(0, openParen) + rightPattern.slice(openParen + 1, closeParen);
+                leftPattern = leftPattern.substring(openParen + 1, leftPattern.length);
+                rightPattern = rightPattern.substring(0, closeParen);
             }
+            // console.log({leftPattern, rightPattern});
 
             const leftResolve = matchPatternLine(input, leftPattern);
             const rightResolve = matchPatternLine(input, rightPattern);
