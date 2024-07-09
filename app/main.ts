@@ -20,11 +20,10 @@ function matchPatternFull(fullInput: string, pattern: string): boolean {
         .find(it => it.matchInput !== null);
 
     if (result === undefined) return false;
-    if (remainingPattern === result.remainingPattern) return false;
-    if (remainingInput === result.remainingInput) return false;
 
     remainingInput = result.remainingInput;
     remainingPattern = result.remainingPattern;
+
     // console.log({remainingInput, remainingPattern});
   }
 

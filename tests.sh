@@ -42,3 +42,6 @@ echo ""
 echo "1 dog" | ./your_grep.sh -E "\d \w\w\ws"
 echo "> last test should fail ('1 dog' | '\d \w\w\ws')"
 echo ""
+
+echo "sally has 3 apples" | ./your_grep.sh -E "\d apple"
+echo ""
