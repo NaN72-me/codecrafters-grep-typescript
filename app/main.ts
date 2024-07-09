@@ -18,6 +18,16 @@ function isDigit(c: string): boolean {
   return !_.isNaN(Number.parseInt(c, 10));
 }
 
+function matchSquareBrackets(inputLine: string, pattern: string): boolean | null {
+  const start = pattern.indexOf("[");
+  const end = pattern.indexOf("]");
+
+  if (start === -1 || end === -1) return null;
+
+  const subPattern = pattern.substring(start + 1, end);
+  return subPattern.split("").some(c => inputLine.includes(c));
+}
+
 function matchPattern(inputLine: string, pattern: string): boolean {
   if (pattern.length === 1) {
     return inputLine.includes(pattern);
@@ -32,6 +42,9 @@ function matchPattern(inputLine: string, pattern: string): boolean {
         c.charCodeAt(0) >= CHAR_CODE_a && c.charCodeAt(0) <= CHAR_CODE_z ||
         isDigit(c)
     );
+
+  const squareBrackets = matchSquareBrackets(inputLine, pattern);
+  if (!_.isNull(squareBrackets)) return squareBrackets;
 
   throw new Error(`Unhandled pattern: ${pattern}`);
 }
