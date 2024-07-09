@@ -22,8 +22,8 @@ function matchPatternLine(line: string, pattern: string): boolean {
   while (remainingPattern.length > 0) {
     if (remainingInput.length === 0) return false;
 
-    const results = Patterns.values()
-        .map(it => it.pattern(remainingPattern,remainingInput, line))
+    const results = Patterns
+        .map(it => it.resolve(remainingPattern,remainingInput, line))
         .filter(it => !_.isNil(it.matchInput));
     // console.log("matchPatternLine", {remainingInput, remainingPattern, results});
 

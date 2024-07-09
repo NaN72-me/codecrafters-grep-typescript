@@ -1,35 +1,26 @@
-import {Pattern, PatternResult} from "../Pattern";
+import {PatternResult} from "../Pattern";
+import {Pattern} from "./Pattern";
 
-export class SquareBrackets extends Pattern {
+export class StartLineAnchor extends Pattern {
 
     constructor() {
-        super("SquareBrackets", "");
+        super("StartLineAnchor", "^");
     }
 
-    override resolve(pattern: string, input: string): PatternResult {
-        let [matchInput, remainingInput, remainingPattern, patternName]: [string|null, string, string, string] =
+    override resolve(pattern: string, input: string, originalLine: string): PatternResult {
+        let [matchInput, remainingInput, remainingPattern, patternName]: [string | null,string, string, string] =
             [null, input, pattern, this.name];
 
         resolve: {
-            const start = pattern.indexOf("[");
-            const end = pattern.indexOf("]");
+            if (!pattern.startsWith(this.pattern)) break resolve;
 
-            if (start !== 0) break resolve;
-            if (end === -1) break resolve;
+            const subPattern = pattern.split(" ")[0].slice(this.pattern.length);
+            // console.log({subPattern, originalLine});
+            if (!originalLine.startsWith(subPattern)) break resolve;
 
-            const subPattern = pattern.substring(start + 1, end);
-            remainingInput = input.slice(end + 1);
-            remainingPattern = pattern.slice(end + 1);
-
-            const isNegation = subPattern.startsWith("^");
-            const subPatternChars = subPattern.split("");
-
-            if (!isNegation) {
-                matchInput = subPatternChars.find(c => input.includes(c)) ?? null;
-                break resolve;
-            }
-
-            matchInput = input.split("").find(c => !subPatternChars.includes(c)) ?? null;
+            matchInput = subPattern;
+            remainingInput = input.slice(matchInput.length + this.pattern.length);
+            remainingPattern = pattern.slice(this.pattern.length + matchInput.length);
         }
 
         return {matchInput, remainingInput, remainingPattern, patternName};

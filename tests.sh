@@ -59,3 +59,17 @@ echo ""
 echo "dogs" | ./your_grep.sh -E "dog$"
 echo "> last test should fail ('dogs' | 'dog$')"
 echo ""
+
+echo "caats" | ./your_grep.sh -E "ca+ts"
+echo ""
+
+echo "apple" | ./your_grep.sh -E "a+"
+echo ""
+
+echo "SaaS" | ./your_grep.sh -E "a+"
+echo ""
+
+echo "dog" | ./your_grep.sh -E "a+"
+echo "> last test should fail ('dog' | 'a+')"
+echo ""
+

@@ -1,9 +1,10 @@
-import {Pattern, PatternResult} from "../Pattern";
+import {PatternResult} from "../Pattern";
+import {Pattern} from "./Pattern";
 
-export class StartLineAnchor extends Pattern {
+export class EndLineAnchor extends Pattern {
 
     constructor() {
-        super("StartLineAnchor", "$");
+        super("EndLineAnchor", "$");
     }
 
     override resolve(pattern: string, input: string, originalLine: string): PatternResult {
@@ -11,17 +12,21 @@ export class StartLineAnchor extends Pattern {
             [null, input, pattern, this.name];
 
         resolve: {
-            if (!pattern.startsWith(this.pattern)) break resolve;
+            const subPatternFull = pattern.split(" ")[0];
+            if (!subPatternFull.endsWith(this.pattern)) break resolve;
 
-            const subPattern = pattern.split(" ")[0].slice(this.pattern.length);
-            // console.log({subPattern, originalLine});
-            if (!originalLine.startsWith(subPattern)) break resolve;
+            const subPattern = subPatternFull.slice(0, subPatternFull.length - this.pattern.length);
+            // console.log({subPattern, originalLine, bool: !originalLine.endsWith(subPattern)});
+
+            if (subPattern.length === 0) break resolve;
+            if (!originalLine.endsWith(subPattern)) break resolve;
 
             matchInput = subPattern;
-            remainingInput = input.slice(matchInput.length + this.pattern.length);
-            remainingPattern = pattern.slice(this.pattern.length + matchInput.length);
+            remainingInput = input.replace(subPattern, "");
+            remainingPattern = pattern.replace(subPatternFull, "");
         }
 
+        // console.log({matchInput, remainingInput, remainingPattern});
         return {matchInput, remainingInput, remainingPattern, patternName};
     }
 }
