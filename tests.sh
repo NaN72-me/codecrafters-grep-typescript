@@ -52,3 +52,10 @@ echo ""
 echo "slog" | ./your_grep.sh -E "^log$"
 echo "> last test should fail ('slog' | '^log$')"
 echo ""
+
+echo "dog" | ./your_grep.sh -E "dog$"
+echo ""
+
+echo "dogs" | ./your_grep.sh -E "dog$"
+echo "> last test should fail ('dogs' | 'dog$')"
+echo ""

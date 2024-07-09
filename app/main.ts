@@ -1,4 +1,5 @@
 import {Patterns} from "./Pattern";
+import _ from "lodash";
 
 const args = process.argv;
 const pattern = args[3];
@@ -21,16 +22,16 @@ function matchPatternLine(line: string, pattern: string): boolean {
   while (remainingPattern.length > 0) {
     if (remainingInput.length === 0) return false;
 
-    const result = Patterns.values()
+    const results = Patterns.values()
         .map(it => it.pattern(remainingPattern,remainingInput, line))
-        .find(it => it.matchInput !== null);
+        .filter(it => !_.isNil(it.matchInput));
+    // console.log("matchPatternLine", {remainingInput, remainingPattern, results});
 
-    if (result === undefined) return false;
+    const result = results.find(it => it.matchInput !== null);
+    if (_.isNil(result)) return false;
 
     remainingInput = result.remainingInput;
     remainingPattern = result.remainingPattern;
-
-    // console.log("matchPatternLine", {remainingInput, remainingPattern});
   }
 
   return true;
