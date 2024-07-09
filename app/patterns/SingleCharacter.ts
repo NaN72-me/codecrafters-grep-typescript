@@ -10,7 +10,7 @@ export class SingleCharacter extends Pattern {
     override _resolveOnce(pattern: string, input: string, originalLine: string): PatternResult {
         let [matchInput, remainingInput, remainingPattern, patternName, matchedPattern]:
             [string|null, string,string, string, string|null] =
-            [null, input.slice(1), pattern.slice(1), this.name, null];
+            [null, input, pattern.slice(1), this.name, null];
 
         // console.log("single", {pattern, input});
         resolve:{
@@ -20,6 +20,7 @@ export class SingleCharacter extends Pattern {
             if (input.charAt(0) !== patternFirstChar) break resolve;
 
             matchInput = patternFirstChar;
+            remainingInput = input.slice(1);
             matchedPattern = patternFirstChar;
         }
 

@@ -25,7 +25,7 @@ function matchPatternLine(line: string, pattern: string): boolean {
     const results = Patterns
         .map(it => it.resolve(remainingPattern,remainingInput, line))
         .filter(it => !_.isNil(it.matchInput));
-    // console.log("matchPatternLine", {remainingInput, remainingPattern, results});
+    // console.log("matchPatternLine", {remainingInput, remainingPattern});
 
     const result = results.find(it => it.matchInput !== null);
     if (_.isNil(result)) return false;

@@ -84,3 +84,6 @@ echo "cat" | ./your_grep.sh -E "dogs?"
 echo "> last test should fail ('cat' | 'dogs?')"
 echo ""
 
+echo "act" | ./your_grep.sh -E "ca?t"
+echo ""
+
