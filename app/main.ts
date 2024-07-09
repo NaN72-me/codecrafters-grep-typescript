@@ -20,7 +20,7 @@ function matchPatternLine(line: string, pattern: string): boolean {
   let remainingPattern = pattern.trim();
 
   while (remainingPattern.length > 0) {
-    if (remainingInput.length === 0) return false;
+    // if (remainingInput.length === 0) return false;
 
     const results = Patterns
         .map(it => it.resolve(remainingPattern,remainingInput, line))

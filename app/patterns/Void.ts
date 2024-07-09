@@ -16,6 +16,7 @@ export class Void extends Pattern {
             if (pattern.startsWith("+")) break resolve;
 
             [matchInput, remainingInput,matchedPattern] = [input.charAt(0), input.slice(1), ""];
+            if (input.length === 0) matchInput = null;
         }
 
         return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};

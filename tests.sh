@@ -73,3 +73,14 @@ echo "dog" | ./your_grep.sh -E "a+"
 echo "> last test should fail ('dog' | 'a+')"
 echo ""
 
+# dogs? should match "dogs" and "dog", but not "cat".
+echo "dogs" | ./your_grep.sh -E "dogs?"
+echo ""
+
+echo "dog" | ./your_grep.sh -E "dogs?"
+echo ""
+
+echo "cat" | ./your_grep.sh -E "dogs?"
+echo "> last test should fail ('cat' | 'dogs?')"
+echo ""
+
