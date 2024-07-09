@@ -45,3 +45,10 @@ echo ""
 
 echo "sally has 3 apples" | ./your_grep.sh -E "\d apple"
 echo ""
+
+echo "log" | ./your_grep.sh -E "^log"
+echo ""
+
+echo "slog" | ./your_grep.sh -E "^log$"
+echo "> last test should fail ('slog' | '^log$')"
+echo ""

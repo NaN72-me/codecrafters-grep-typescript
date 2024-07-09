@@ -9,14 +9,20 @@ if (args[2] !== "-E") {
 }
 
 function matchPatternFull(fullInput: string, pattern: string): boolean {
-  let remainingInput = fullInput.trim();
+  const lines = fullInput.split("\n");
+  return lines.filter(it=>it!=="")
+      .every(line => matchPatternLine(line, pattern));
+}
+
+function matchPatternLine(line: string, pattern: string): boolean {
+  let remainingInput = line.trim();
   let remainingPattern = pattern.trim();
 
   while (remainingPattern.length > 0) {
     if (remainingInput.length === 0) return false;
 
     const result = Patterns.values()
-        .map(it => it.pattern(remainingPattern,remainingInput))
+        .map(it => it.pattern(remainingPattern,remainingInput, line))
         .find(it => it.matchInput !== null);
 
     if (result === undefined) return false;
@@ -24,7 +30,7 @@ function matchPatternFull(fullInput: string, pattern: string): boolean {
     remainingInput = result.remainingInput;
     remainingPattern = result.remainingPattern;
 
-    // console.log({remainingInput, remainingPattern});
+    // console.log("matchPatternLine", {remainingInput, remainingPattern});
   }
 
   return true;

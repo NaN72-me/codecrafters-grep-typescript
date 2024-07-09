@@ -8,7 +8,7 @@ interface PatternResult {
 
 class Pattern {
     constructor(
-        public readonly pattern: (arg0: string, arg1: string) => PatternResult
+        public readonly pattern: (arg0: string, arg1: string, arg2: string) => PatternResult
     ) {
         this.pattern = pattern;
     }
@@ -35,7 +35,7 @@ export const Patterns = {
     Digit: new Pattern((pattern,input) => {
         let [matchInput, remainingInput, remainingPattern]: [string|null, string, string] = [null, input, pattern];
 
-        const PATTERN = "\\d";
+        const PATTERN = "\\d" as const;
         if (!_.startsWith(pattern, PATTERN)) return {matchInput, remainingInput, remainingPattern};
 
         const firstChar = input.charAt(0);
@@ -50,13 +50,13 @@ export const Patterns = {
     Alphanumeric: new Pattern((pattern,input) => {
         let [matchInput, remainingInput, remainingPattern]: [string|null, string, string] = [null, input, pattern];
 
-        const PATTERN = "\\w";
+        const PATTERN = "\\w" as const;
         if (!pattern.startsWith(PATTERN)) return {matchInput, remainingInput, remainingPattern};
 
-        const CHAR_CODE_A = 65;
-        const CHAR_CODE_Z = 90;
-        const CHAR_CODE_a = 97;
-        const CHAR_CODE_z = 122;
+        const CHAR_CODE_A = 65 as const;
+        const CHAR_CODE_Z = 90 as const;
+        const CHAR_CODE_a = 97 as const;
+        const CHAR_CODE_z = 122 as const;
 
         const firstChar = input.charAt(0);
         const firstCharCode = firstChar.charCodeAt(0);
@@ -93,6 +93,22 @@ export const Patterns = {
         }
 
         matchInput = input.split("").find(c => !subPatternChars.includes(c)) ?? null;
+        return {matchInput, remainingInput, remainingPattern};
+    }),
+    LineAnchor: new Pattern((pattern,input, originalLine) => {
+        let [matchInput, remainingInput, remainingPattern]: [string | null, string, string] = [null, input, pattern];
+
+        const PATTERN = "^" as const;
+        if (!pattern.startsWith(PATTERN)) return {matchInput, remainingInput, remainingPattern};
+
+        const subPattern = pattern.split(" ")[0].slice(PATTERN.length);
+        // console.log({subPattern, originalLine});
+        if (!originalLine.startsWith(subPattern)) return {matchInput, remainingInput, remainingPattern};
+
+        matchInput = subPattern;
+        remainingInput = input.slice(matchInput.length + PATTERN.length);
+        remainingPattern = pattern.slice(PATTERN.length + matchInput.length);
+
         return {matchInput, remainingInput, remainingPattern};
     }),
     Void: new Pattern((pattern,input) => {
