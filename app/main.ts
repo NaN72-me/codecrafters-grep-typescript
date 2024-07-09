@@ -1,5 +1,4 @@
-import * as sugar from "sugar";
-import _ from "lodash";
+import {Patterns} from "./Pattern";
 
 const args = process.argv;
 const pattern = args[3];
@@ -9,56 +8,33 @@ if (args[2] !== "-E") {
   process.exit(1);
 }
 
-const CHAR_CODE_A = 65;
-const CHAR_CODE_Z = 90;
-const CHAR_CODE_a = 97;
-const CHAR_CODE_z = 122;
+function matchPatternFull(fullInput: string, pattern: string): boolean {
+  let remainingInput = fullInput.trim();
+  let remainingPattern = pattern.trim();
 
-function isDigit(c: string): boolean {
-  return !_.isNaN(Number.parseInt(c, 10));
-}
+  while (remainingPattern.length > 0) {
+    if (remainingInput.length === 0) return false;
 
-function matchSquareBrackets(inputLine: string, pattern: string): boolean | null {
-  const start = pattern.indexOf("[");
-  const end = pattern.indexOf("]");
+    const result = Patterns.values()
+        .map(it => it.pattern(remainingPattern,remainingInput))
+        .find(it => it.matchInput !== null);
 
-  if (start === -1 || end === -1) return null;
+    if (result === undefined) return false;
+    if (remainingPattern === result.remainingPattern) return false;
+    if (remainingInput === result.remainingInput) return false;
 
-  const subPattern = pattern.substring(start + 1, end);
-  const isNegation = subPattern.startsWith("^");
+    remainingInput = result.remainingInput;
+    remainingPattern = result.remainingPattern;
+    // console.log({remainingInput, remainingPattern});
+  }
 
-  const subPatternChars = subPattern.split("");
-  if (!isNegation) return subPatternChars
-          .some(c =>  inputLine.includes(c));
-
-  return inputLine.split("")
-      .some(c => !subPatternChars.includes(c));
-}
-
-function matchPattern(inputLine: string, pattern: string): boolean {
-  inputLine = inputLine.trimEnd();
-  if (pattern.length === 1) return inputLine.includes(pattern);
-
-  if (_.includes(pattern, "\\d"))
-    return sugar.Array.some(inputLine.split(""), c=> isDigit(c));
-
-  if (_.includes(pattern, "\\w"))
-    return sugar.Array.some(inputLine.split(""), c=>
-        c.charCodeAt(0) >= CHAR_CODE_A && c.charCodeAt(0) <= CHAR_CODE_Z ||
-        c.charCodeAt(0) >= CHAR_CODE_a && c.charCodeAt(0) <= CHAR_CODE_z ||
-        isDigit(c)
-    );
-
-  const squareBrackets = matchSquareBrackets(inputLine, pattern);
-  if (!_.isNull(squareBrackets)) return squareBrackets;
-
-  throw new Error(`Unhandled pattern: ${pattern}`);
+  return true;
 }
 
 async function main(){
   const inputLine: string = await Bun.stdin.text();
 
-  if (!matchPattern(inputLine, pattern)) {
+  if (!matchPatternFull(inputLine, pattern)) {
     console.log("You have failed me!", inputLine, pattern);
     process.exit(1);
   }
