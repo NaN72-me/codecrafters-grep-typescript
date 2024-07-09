@@ -6,6 +6,7 @@ import {StartLineAnchor} from "./patterns/StartLineAnchor";
 import {EndLineAnchor} from "./patterns/EndLineAnchor";
 import {SingleCharacter} from "./patterns/SingleCharacter";
 import {Void} from "./patterns/Void";
+import {Alternation} from "./patterns/Alternation";
 
 export interface PatternResult {
     matchInput: string | null;
@@ -20,6 +21,8 @@ export function isDigit(c: string): boolean {
 }
 
 export const Patterns = [
+    new Alternation(),
+
     new Digit(),
     new AlphaNumeric(),
     new SquareBrackets(),

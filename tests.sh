@@ -94,3 +94,22 @@ echo "cog" | ./your_grep.sh -E "d.g"
 echo "> last test should fail ('cog' | 'd.g')"
 echo ""
 
+echo "cat" | ./your_grep.sh -E "cat|dog"
+echo ""
+
+echo "dog" | ./your_grep.sh -E "cat|dog"
+echo ""
+
+echo "apple" | ./your_grep.sh -E "cat|dog"
+echo "> last test should fail ('apple' | 'cat|dog'"
+echo ""
+
+echo "cat" | ./your_grep.sh -E "(cat|dog)"
+echo ""
+
+echo "dog" | ./your_grep.sh -E "(cat|dog)"
+echo ""
+
+echo "apple" | ./your_grep.sh -E "(cat|dog)"
+echo "> last test should fail ('apple' | '(cat|dog)'"
+echo ""

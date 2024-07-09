@@ -1,4 +1,4 @@
-import {Patterns} from "./Pattern";
+import {PatternResult, Patterns} from "./Pattern";
 import _ from "lodash";
 
 const args = process.argv;
@@ -15,9 +15,10 @@ function matchPatternFull(fullInput: string, pattern: string): boolean {
       .every(line => matchPatternLine(line, pattern));
 }
 
-function matchPatternLine(line: string, pattern: string): boolean {
+export function matchPatternLine(line: string, pattern: string): PatternResult |null {
   let remainingInput = line.trim();
   let remainingPattern = pattern.trim();
+  let result :PatternResult|null = null;
 
   while (remainingPattern.length > 0) {
     // if (remainingInput.length === 0) return false;
@@ -25,16 +26,15 @@ function matchPatternLine(line: string, pattern: string): boolean {
     const results = Patterns
         .map(it => it.resolve(remainingPattern,remainingInput, line))
         .filter(it => !_.isNil(it.matchInput));
-    // console.log("matchPatternLine", {remainingInput, remainingPattern});
 
-    const result = results.find(it => it.matchInput !== null);
-    if (_.isNil(result)) return false;
+    result = results.find(it => it.matchInput !== null) ?? null;
+    if (_.isNil(result)) return null;
 
     remainingInput = result.remainingInput;
     remainingPattern = result.remainingPattern;
   }
 
-  return true;
+  return result;
 }
 
 async function main(){
