@@ -25,13 +25,19 @@ function matchSquareBrackets(inputLine: string, pattern: string): boolean | null
   if (start === -1 || end === -1) return null;
 
   const subPattern = pattern.substring(start + 1, end);
-  return subPattern.split("").some(c => inputLine.includes(c));
+  const isNegation = subPattern.startsWith("^");
+
+  const subPatternChars = subPattern.split("");
+  if (!isNegation) return subPatternChars
+          .some(c =>  inputLine.includes(c));
+
+  return inputLine.split("")
+      .some(c => !subPatternChars.includes(c));
 }
 
 function matchPattern(inputLine: string, pattern: string): boolean {
-  if (pattern.length === 1) {
-    return inputLine.includes(pattern);
-  }
+  inputLine = inputLine.trimEnd();
+  if (pattern.length === 1) return inputLine.includes(pattern);
 
   if (_.includes(pattern, "\\d"))
     return sugar.Array.some(inputLine.split(""), c=> isDigit(c));
