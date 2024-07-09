@@ -12,7 +12,7 @@ export class AlphaNumeric extends Pattern {
         super("AlphaNumeric", "\\w");
     }
 
-    override resolve(pattern: string, input: string): PatternResult {
+    override _resolveOnce(pattern: string, input: string): PatternResult {
         let [matchInput, remainingInput, remainingPattern, patternName, matchedPattern]:
             [string | null, string, string, string, string | null] =
             [null, input, pattern, this.name, null];
@@ -33,6 +33,6 @@ export class AlphaNumeric extends Pattern {
             matchedPattern = this.pattern;
         }
 
-        return {matchInput, remainingInput, remainingPattern, patternName};
+        return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};
     }
 }

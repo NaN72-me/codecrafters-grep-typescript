@@ -7,9 +7,10 @@ export class SquareBrackets extends Pattern {
         super("SquareBrackets", "");
     }
 
-    override resolve(pattern: string, input: string): PatternResult {
-        let [matchInput, remainingInput, remainingPattern, patternName]: [string|null, string, string, string] =
-            [null, input, pattern, this.name];
+    override _resolveOnce(pattern: string, input: string): PatternResult {
+        let [matchInput, remainingInput, remainingPattern, patternName, matchedPattern]:
+            [string|null, string, string, string,string|null] =
+            [null, input, pattern, this.name,null];
 
         resolve: {
             const start = pattern.indexOf("[");
@@ -31,8 +32,9 @@ export class SquareBrackets extends Pattern {
             }
 
             matchInput = input.split("").find(c => !subPatternChars.includes(c)) ?? null;
+            matchedPattern = "[" + subPattern + "]";
         }
 
-        return {matchInput, remainingInput, remainingPattern, patternName};
+        return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};
     }
 }

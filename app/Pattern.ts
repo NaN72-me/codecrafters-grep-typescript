@@ -12,7 +12,7 @@ export interface PatternResult {
     remainingInput: string;
     remainingPattern: string;
     patternName: string;
-    // matchedPattern: string | null;
+    matchedPattern: string | null;
 }
 
 export function isDigit(c: string): boolean {

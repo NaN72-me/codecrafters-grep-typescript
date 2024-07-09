@@ -7,9 +7,10 @@ export class SingleCharacter extends Pattern {
         super("SingleCharacter", "$");
     }
 
-    override resolve(pattern: string, input: string, originalLine: string): PatternResult {
-        let [matchInput, remainingInput, remainingPattern, patternName]: [string|null, string,string, string] =
-            [null, input, pattern, this.name];
+    override _resolveOnce(pattern: string, input: string, originalLine: string): PatternResult {
+        let [matchInput, remainingInput, remainingPattern, patternName, matchedPattern]:
+            [string|null, string,string, string, string|null] =
+            [null, input, pattern, this.name, null];
 
         resolve:{
             if (pattern.length < 1) break resolve;
@@ -20,8 +21,9 @@ export class SingleCharacter extends Pattern {
             matchInput = patternFirstChar;
             remainingInput = input.slice(1);
             remainingPattern = pattern.slice(1);
+            matchedPattern = patternFirstChar;
         }
 
-        return {matchInput, remainingInput, remainingPattern, patternName};
+        return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};
     }
 }

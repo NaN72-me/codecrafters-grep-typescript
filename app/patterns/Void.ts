@@ -7,9 +7,10 @@ export class Void extends Pattern {
         super("Void", "");
     }
 
-    override resolve(pattern: string, input: string, originalLine: string): PatternResult {
-        let [matchInput, remainingInput, remainingPattern, patternName]: [string | null,string, string, string] =
-            [input.charAt(0), input.slice(1), pattern, this.name];
-        return {matchInput, remainingInput, remainingPattern, patternName};
+    override _resolveOnce(pattern: string, input: string, originalLine: string): PatternResult {
+        let [matchInput, remainingInput, remainingPattern, patternName,matchedPattern]:
+            [string | null,string, string, string,string|null] =
+            [input.charAt(0), input.slice(1), pattern, this.name, ""];
+        return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};
     }
 }

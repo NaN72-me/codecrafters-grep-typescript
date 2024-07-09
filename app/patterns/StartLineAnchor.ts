@@ -7,9 +7,10 @@ export class StartLineAnchor extends Pattern {
         super("StartLineAnchor", "^");
     }
 
-    override resolve(pattern: string, input: string, originalLine: string): PatternResult {
-        let [matchInput, remainingInput, remainingPattern, patternName]: [string | null,string, string, string] =
-            [null, input, pattern, this.name];
+    override _resolveOnce(pattern: string, input: string, originalLine: string): PatternResult {
+        let [matchInput, remainingInput, remainingPattern, patternName, matchedPattern]:
+            [string | null,string, string, string,string|null] =
+            [null, input, pattern, this.name, null];
 
         resolve: {
             if (!pattern.startsWith(this.pattern)) break resolve;
@@ -21,8 +22,9 @@ export class StartLineAnchor extends Pattern {
             matchInput = subPattern;
             remainingInput = input.slice(matchInput.length + this.pattern.length);
             remainingPattern = pattern.slice(this.pattern.length + matchInput.length);
+            matchedPattern =this.pattern + subPattern;
         }
 
-        return {matchInput, remainingInput, remainingPattern, patternName};
+        return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};
     }
 }

@@ -7,9 +7,10 @@ export class EndLineAnchor extends Pattern {
         super("EndLineAnchor", "$");
     }
 
-    override resolve(pattern: string, input: string, originalLine: string): PatternResult {
-        let [matchInput, remainingInput, remainingPattern, patternName]: [string | null,string, string, string] =
-            [null, input, pattern, this.name];
+    override _resolveOnce(pattern: string, input: string, originalLine: string): PatternResult {
+        let [matchInput, remainingInput, remainingPattern, patternName, matchedPattern]:
+            [string | null,string, string, string, string|null] =
+            [null, input, pattern, this.name, null];
 
         resolve: {
             const subPatternFull = pattern.split(" ")[0];
@@ -24,9 +25,10 @@ export class EndLineAnchor extends Pattern {
             matchInput = subPattern;
             remainingInput = input.replace(subPattern, "");
             remainingPattern = pattern.replace(subPatternFull, "");
+            matchedPattern = subPatternFull;
         }
 
         // console.log({matchInput, remainingInput, remainingPattern});
-        return {matchInput, remainingInput, remainingPattern, patternName};
+        return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};
     }
 }
