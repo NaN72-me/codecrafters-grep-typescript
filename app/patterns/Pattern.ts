@@ -8,6 +8,23 @@ export class Pattern {
     }
 
     resolve(pattern: string, input: string, originalLine: string): PatternResult {
-        return this._resolveOnce(pattern, input, originalLine);
+        const resolve =  this._resolveOnce(pattern, input, originalLine);
+
+        if (!resolve.remainingPattern.startsWith("+")) return resolve;
+
+        // console.log("once",{resolve});
+        if (resolve.matchedPattern === resolve.matchInput) {
+            resolve.remainingPattern = resolve.remainingPattern.slice(1);
+
+            // console.log("nil",{resolve});
+            return resolve;
+        }
+
+        // console.log("+",{resolve});
+        return this.resolve(
+            resolve.matchedPattern + resolve.remainingPattern,
+            resolve.remainingInput,
+            originalLine
+        );
     }
 }

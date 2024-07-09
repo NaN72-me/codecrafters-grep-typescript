@@ -8,9 +8,16 @@ export class Void extends Pattern {
     }
 
     override _resolveOnce(pattern: string, input: string, originalLine: string): PatternResult {
-        let [matchInput, remainingInput, remainingPattern, patternName,matchedPattern]:
+        let [matchInput, remainingInput, remainingPattern, patternName, matchedPattern]:
             [string | null,string, string, string,string|null] =
-            [input.charAt(0), input.slice(1), pattern, this.name, ""];
+            [null, input, pattern, this.name, null];
+
+        resolve: {
+            if (pattern.startsWith("+")) break resolve;
+
+            [matchInput, remainingInput,matchedPattern] = [input.charAt(0), input.slice(1), ""];
+        }
+
         return {matchInput, remainingInput, remainingPattern, patternName, matchedPattern};
     }
 }

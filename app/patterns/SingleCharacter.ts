@@ -12,6 +12,7 @@ export class SingleCharacter extends Pattern {
             [string|null, string,string, string, string|null] =
             [null, input, pattern, this.name, null];
 
+        // console.log("single", {pattern, input});
         resolve:{
             if (pattern.length < 1) break resolve;
 
