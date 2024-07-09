@@ -17,7 +17,7 @@ export class SingleCharacter extends Pattern {
             if (pattern.length < 1) break resolve;
 
             const patternFirstChar = pattern.charAt(0);
-            if (input.charAt(0) !== patternFirstChar) break resolve;
+            if (input.charAt(0) !== patternFirstChar && patternFirstChar !== ".") break resolve;
 
             matchInput = patternFirstChar;
             remainingInput = input.slice(1);

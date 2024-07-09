@@ -87,3 +87,10 @@ echo ""
 echo "act" | ./your_grep.sh -E "ca?t"
 echo ""
 
+echo "dog" | ./your_grep.sh -E "d.g"
+echo ""
+
+echo "cog" | ./your_grep.sh -E "d.g"
+echo "> last test should fail ('cog' | 'd.g')"
+echo ""
+
